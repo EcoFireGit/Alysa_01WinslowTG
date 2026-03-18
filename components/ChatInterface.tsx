@@ -28,6 +28,7 @@ interface ChatInterfaceProps {
 }
 
 const SUGGESTED_PROMPTS = [
+  'Take me to my dashboard',
   'Which accounts have Quiet Risk — silent backup failures the client hasn\'t reported yet?',
   'Which accounts are in the Security Red Zone and what\'s the vCISO action plan?',
   'Show all Nutanix capacity triggers and draft expansion SOW summaries',
@@ -85,6 +86,13 @@ export function ChatInterface({ onFeedback, initialPrompt }: ChatInterfaceProps)
 
   async function sendMessage(text: string) {
     if (!text.trim() || isStreaming) return
+
+    // Dashboard navigation
+    const normalized = text.trim().toLowerCase()
+    if (normalized.includes('take me to my dashboard') || normalized === 'dashboard') {
+      if (typeof window !== 'undefined') window.location.href = '/dashboard'
+      return
+    }
     const userMessage: ChatMessage = { id: Date.now().toString(), role: 'user', content: text.trim(), timestamp: new Date() }
     setMessages(prev => [...prev, userMessage])
     setInput('')
