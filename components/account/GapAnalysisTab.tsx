@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { CollapsibleCard } from '@/components/ui/CollapsibleCard'
-import { SectionFeedback } from './SectionFeedback'
+import { SectionChat } from './SectionChat'
 import { AccountData, GapRow } from '@/lib/types'
 
 const CONFIDENCE_STYLE = (c: string) =>
@@ -60,16 +60,31 @@ export function GapAnalysisTab({ account }: { account: AccountData }) {
       <div className="col-span-2 space-y-4">
 
         {/* Customer Voice */}
-        <CollapsibleCard title="Customer Voice">
+        <CollapsibleCard
+          title="Customer Voice"
+          infoSources={['Fathom', 'ConnectWise PSA', 'MS Teams']}
+          infoDefinition="Captured from Fathom meeting transcripts, ConnectWise account notes, and MS Teams conversation summaries."
+        >
           <div className="grid grid-cols-3 gap-3 text-xs">
             <div>
               <div className="font-semibold mb-2" style={{ color: 'var(--text-muted)', letterSpacing: '0.05em' }}>THEY SAID…</div>
               <div className="space-y-2">
-                {account.customerSaid.map((s, i) => (
-                  <div key={i} className="italic p-2 rounded-lg" style={{ background: 'rgba(87,94,207,0.06)', color: 'var(--text-secondary)', border: '1px solid var(--accent-border-medium, rgba(87,94,207,0.15))' }}>
-                    {s}
-                  </div>
-                ))}
+                {account.customerSaid.map((s, i) => {
+                  const meta = account.customerSaidMeta?.[i]
+                  return (
+                    <div key={i} className="group relative italic p-2 rounded-lg cursor-default" style={{ background: 'rgba(87,94,207,0.06)', color: 'var(--text-secondary)', border: '1px solid var(--accent-border-medium, rgba(87,94,207,0.15))' }}>
+                      {s}
+                      {meta && (
+                        <div className="pointer-events-none absolute bottom-full left-0 mb-1.5 z-20 w-max max-w-[220px] rounded-lg px-3 py-2 text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-150 shadow-lg"
+                          style={{ background: 'var(--surface)', border: '1px solid var(--accent-border-strong, rgba(87,94,207,0.4))', color: 'var(--text-primary)' }}>
+                          <div className="font-semibold mb-0.5" style={{ color: 'var(--accent-light)' }}>{meta.source}</div>
+                          <div style={{ color: 'var(--text-muted)' }}>{meta.timestamp}</div>
+                          <div className="absolute left-3 top-full w-0 h-0" style={{ borderLeft: '5px solid transparent', borderRight: '5px solid transparent', borderTop: '5px solid var(--accent-border-strong, rgba(87,94,207,0.4))' }} />
+                        </div>
+                      )}
+                    </div>
+                  )
+                })}
               </div>
             </div>
             <div>
@@ -93,11 +108,19 @@ export function GapAnalysisTab({ account }: { account: AccountData }) {
               </div>
             </div>
           </div>
+          <SectionChat
+            sectionTitle="Customer Voice"
+            accountName={account.name}
+            context={`They said:\n${account.customerSaid.join('\n')}\n\nWe observed:\n${account.weObserved.join('\n')}\n\nWe infer:\n${account.weInfer.join('\n')}`}
+            compact
+          />
         </CollapsibleCard>
 
         {/* Gap Analysis */}
         <CollapsibleCard
           title="Gap Analysis — Internal View"
+          infoSources={['NorthstarMS', 'Forrester', 'IDC', 'Fathom']}
+          infoDefinition="Gaps identified from NorthstarMS delivery telemetry, Fathom meeting intel, and Forrester/IDC industry benchmarks."
           badge={
             <span className="text-xs px-1.5 py-0.5 rounded ml-1" style={{ background: 'rgba(87,94,207,0.1)', color: 'var(--accent)' }}>
               {Object.values(exposedMap).filter(Boolean).length} exposed
@@ -153,7 +176,11 @@ export function GapAnalysisTab({ account }: { account: AccountData }) {
               )
             })}
           </div>
-          <SectionFeedback />
+          <SectionChat
+            sectionTitle="Gap Analysis"
+            accountName={account.name}
+            context={account.gapRows.map(g => `Goal: ${g.goal}\nGap: ${g.gap}\nRecommendation: ${g.recommendation}\nImpact: ${g.impact}\nValue: $${g.estimatedValue}`).join('\n\n')}
+          />
         </CollapsibleCard>
       </div>
 
@@ -161,7 +188,12 @@ export function GapAnalysisTab({ account }: { account: AccountData }) {
       <div className="space-y-4">
 
         {/* Expansion Pipeline */}
-        <CollapsibleCard title="Expansion Pipeline" badge={<span className="text-xs px-1.5 py-0.5 rounded ml-1" style={{ background: 'rgba(248,113,113,0.1)', color: '#f87171' }}>Internal</span>}>
+        <CollapsibleCard
+          title="Expansion Pipeline"
+          infoSources={['ConnectWise PSA', 'NorthstarMS', 'Forrester']}
+          infoDefinition="Expansion values derived from identified gaps, NorthstarMS utilisation signals, and Forrester industry benchmarks."
+          badge={<span className="text-xs px-1.5 py-0.5 rounded ml-1" style={{ background: 'rgba(248,113,113,0.1)', color: '#f87171' }}>Internal</span>}
+        >
           <div className="space-y-3 text-sm">
             <div className="grid grid-cols-2 gap-2">
               <div>

@@ -84,6 +84,7 @@ export interface AccountData {
   techStackDetails: TechStackItem[]
   expansionOpps: ExpansionOpp[]
   customerSaid: string[]
+  customerSaidMeta?: { source: string; timestamp: string }[]
   weObserved: string[]
   weInfer: string[]
   gapRows: GapRow[]

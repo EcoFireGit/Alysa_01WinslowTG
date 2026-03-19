@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { CheckCircle2, ArrowRight, ShieldAlert, Lightbulb, FileText, Download, Minimize2, Maximize2, Plus, Trash2, Pencil, Check, X, BarChart2, Loader2 } from 'lucide-react'
+import { CheckCircle2, ArrowRight, ShieldAlert, Lightbulb, FileText, Download, Minimize2, Maximize2, Plus, Trash2, Pencil, Check, X, BarChart2, Loader2, User2, CalendarDays, List } from 'lucide-react'
 import { CollapsibleCard } from '@/components/ui/CollapsibleCard'
+import { SectionChat } from './SectionChat'
 import { AccountData } from '@/lib/types'
 import { exportQBRtoPPT } from '@/lib/exportPPT'
 
@@ -258,6 +259,11 @@ export function QBRExecBriefTab({ account }: { account: AccountData }) {
     }
   }
 
+  // Title page state
+  const [presentedBy, setPresentedBy] = useState('Marcus Reilly')
+  const [editingPresenter, setEditingPresenter] = useState(false)
+  const [presenterDraft, setPresenterDraft] = useState(presentedBy)
+
   // Editable state for each card
   const [priorities, setPriorities] = useState(account.qbrPriorities)
   const [delivered, setDelivered] = useState(account.qbrDelivered)
@@ -322,11 +328,89 @@ export function QBRExecBriefTab({ account }: { account: AccountData }) {
         Hover any item to edit or delete · Click "+ Add item" to add a new row
       </div>
 
+      {/* Title page */}
+      <div className="rounded-xl overflow-hidden" style={{ background: 'var(--accent-bg-hover, rgba(87,94,207,0.18))', border: '1px solid var(--accent-border-strong, rgba(87,94,207,0.4))' }}>
+        <div className="px-6 py-6 flex flex-col items-center text-center gap-3">
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bold" style={{ background: 'var(--accent)', color: '#fff' }}>
+            {account.name.charAt(0)}
+          </div>
+          <div>
+            <div className="text-xl font-bold mb-1" style={{ color: 'var(--text-hover)' }}>{account.name}</div>
+            <div className="text-sm font-medium" style={{ color: 'var(--accent-light)' }}>Quarterly Business Review</div>
+          </div>
+          <div className="flex items-center gap-6 mt-1 text-xs" style={{ color: 'var(--text-secondary)' }}>
+            <div className="flex items-center gap-1.5">
+              <CalendarDays className="w-3.5 h-3.5" style={{ color: 'var(--text-muted)' }} />
+              {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+            </div>
+            <div className="flex items-center gap-1.5">
+              <User2 className="w-3.5 h-3.5" style={{ color: 'var(--text-muted)' }} />
+              {editingPresenter ? (
+                <span className="flex items-center gap-1">
+                  <input
+                    autoFocus
+                    value={presenterDraft}
+                    onChange={e => setPresenterDraft(e.target.value)}
+                    onKeyDown={e => {
+                      if (e.key === 'Enter') { setPresentedBy(presenterDraft); setEditingPresenter(false) }
+                      if (e.key === 'Escape') { setPresenterDraft(presentedBy); setEditingPresenter(false) }
+                    }}
+                    className="text-xs rounded px-1.5 py-0.5 w-44"
+                    style={{ background: 'var(--bg)', border: '1px solid var(--accent-border)', color: 'var(--text-primary)', outline: 'none' }}
+                  />
+                  <button onClick={() => { setPresentedBy(presenterDraft); setEditingPresenter(false) }} style={{ color: '#4ade80' }}><Check className="w-3 h-3" /></button>
+                  <button onClick={() => { setPresenterDraft(presentedBy); setEditingPresenter(false) }} style={{ color: '#f87171' }}><X className="w-3 h-3" /></button>
+                </span>
+              ) : (
+                <span
+                  className="cursor-pointer flex items-center gap-1 group"
+                  onClick={() => setEditingPresenter(true)}
+                  title="Click to edit presenter"
+                >
+                  Presented by <span style={{ color: 'var(--accent-light)', fontWeight: 600 }}>{presentedBy}</span>
+                  <Pencil className="w-2.5 h-2.5 opacity-0 group-hover:opacity-60 transition-opacity" />
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Agenda */}
+      <CollapsibleCard title="Agenda" icon={<List className="w-4 h-4" />} defaultOpen>
+        <div className="grid grid-cols-2 gap-2">
+          {[
+            { n: 1, label: 'What You Said Matters This Quarter', sub: 'Your stated priorities & goals' },
+            { n: 2, label: 'What We Delivered', sub: 'Services & outcomes this quarter' },
+            { n: 3, label: 'Next Steps & Decisions', sub: 'Actions & open decisions' },
+            ...(mode === 'standard' ? [
+              { n: 4, label: 'Risks We\'re Managing', sub: 'Active risk items & mitigations' },
+              { n: 5, label: 'Opportunities to Improve Outcomes', sub: 'Recommendations for next quarter' },
+              { n: 6, label: 'Technical Metrics → Business Outcomes', sub: 'Delivery impact in business terms' },
+            ] : []),
+          ].map(({ n, label, sub }) => (
+            <div key={n} className="flex items-start gap-3 rounded-lg px-3 py-2" style={{ background: 'var(--bg)', border: '1px solid var(--border-faint)' }}>
+              <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold mt-0.5" style={{ background: 'rgba(87,94,207,0.15)', color: 'var(--accent)' }}>{n}</span>
+              <div>
+                <div className="text-xs font-semibold" style={{ color: 'var(--text-primary)' }}>{label}</div>
+                <div className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>{sub}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </CollapsibleCard>
+
       {/* Content grid */}
       <div className={`grid gap-4 ${mode === 'executive' ? 'grid-cols-2' : 'grid-cols-3'}`}>
 
         {/* What You Said Matters */}
-        <CollapsibleCard title="What You Said Matters This Quarter" icon={<FileText className="w-4 h-4" />} defaultOpen>
+        <CollapsibleCard
+          title="What You Said Matters This Quarter"
+          icon={<FileText className="w-4 h-4" />}
+          infoSources={['Fathom', 'ConnectWise PSA', 'MS Teams']}
+          infoDefinition="Priorities captured from QBR meeting transcripts, ConnectWise account notes, and MS Teams conversations."
+          defaultOpen
+        >
           <EditableList
             items={priorities}
             onChange={setPriorities}
@@ -334,25 +418,55 @@ export function QBRExecBriefTab({ account }: { account: AccountData }) {
             iconColor="var(--accent)"
             numbered
           />
+          <SectionChat
+            sectionTitle="Priorities This Quarter"
+            accountName={account.name}
+            context={`Priorities:\n${priorities.join('\n')}`}
+            compact
+          />
         </CollapsibleCard>
 
         {/* What We Delivered */}
-        <CollapsibleCard title="What We Delivered" icon={<CheckCircle2 className="w-4 h-4" />} defaultOpen>
+        <CollapsibleCard
+          title="What We Delivered"
+          icon={<CheckCircle2 className="w-4 h-4" />}
+          infoSources={['NorthstarMS', 'ConnectWise PSA']}
+          infoDefinition="Deliverables sourced from NorthstarMS delivery telemetry and ConnectWise PSA project completion records."
+          defaultOpen
+        >
           <EditableList
             items={delivered}
             onChange={setDelivered}
             icon={<CheckCircle2 className="w-3.5 h-3.5" />}
             iconColor="#4ade80"
           />
+          <SectionChat
+            sectionTitle="What We Delivered"
+            accountName={account.name}
+            context={`Delivered this quarter:\n${delivered.join('\n')}`}
+            compact
+          />
         </CollapsibleCard>
 
         {/* Next Steps */}
-        <CollapsibleCard title="Next Steps & Decisions" icon={<ArrowRight className="w-4 h-4" />} defaultOpen>
+        <CollapsibleCard
+          title="Next Steps & Decisions"
+          icon={<ArrowRight className="w-4 h-4" />}
+          infoSources={['Fathom', 'ConnectWise PSA']}
+          infoDefinition="Next steps and open decisions captured from Fathom meeting notes and ConnectWise action items."
+          defaultOpen
+        >
           <EditableList
             items={nextSteps}
             onChange={setNextSteps}
             icon={<ArrowRight className="w-3.5 h-3.5" />}
             iconColor="var(--accent)"
+          />
+          <SectionChat
+            sectionTitle="Next Steps & Decisions"
+            accountName={account.name}
+            context={`Next steps:\n${nextSteps.join('\n')}`}
+            compact
           />
         </CollapsibleCard>
 
@@ -360,22 +474,44 @@ export function QBRExecBriefTab({ account }: { account: AccountData }) {
         {mode === 'standard' && (
           <>
             {/* Risks */}
-            <CollapsibleCard title="Risks We're Managing" icon={<ShieldAlert className="w-4 h-4" />}>
+            <CollapsibleCard
+              title="Risks We're Managing"
+              icon={<ShieldAlert className="w-4 h-4" />}
+              infoSources={['CrowdStrike', 'Arctic Wolf', 'Zscaler', 'NorthstarMS']}
+              infoDefinition="Active risks identified from security tooling signals, NorthstarMS delivery health, and vulnerability assessments."
+            >
               <EditableList
                 items={risks}
                 onChange={setRisks}
                 icon={<ShieldAlert className="w-3.5 h-3.5" />}
                 iconColor="#f87171"
               />
+              <SectionChat
+                sectionTitle="Risks We're Managing"
+                accountName={account.name}
+                context={`Current risks:\n${risks.join('\n')}`}
+                compact
+              />
             </CollapsibleCard>
 
             {/* Opportunities */}
-            <CollapsibleCard title="Opportunities to Improve Outcomes" icon={<Lightbulb className="w-4 h-4" />}>
+            <CollapsibleCard
+              title="Opportunities to Improve Outcomes"
+              icon={<Lightbulb className="w-4 h-4" />}
+              infoSources={['NorthstarMS', 'Forrester', 'IDC']}
+              infoDefinition="Expansion opportunities derived from NorthstarMS utilisation gaps and Forrester/IDC industry benchmarks."
+            >
               <EditableList
                 items={opportunities}
                 onChange={setOpportunities}
                 icon={<Lightbulb className="w-3.5 h-3.5" />}
                 iconColor="#facc15"
+              />
+              <SectionChat
+                sectionTitle="Opportunities to Improve Outcomes"
+                accountName={account.name}
+                context={`Opportunities:\n${opportunities.join('\n')}`}
+                compact
               />
             </CollapsibleCard>
 
@@ -383,6 +519,8 @@ export function QBRExecBriefTab({ account }: { account: AccountData }) {
             <CollapsibleCard
               title="Technical Metrics → Business Outcomes"
               icon={<BarChart2 className="w-4 h-4" />}
+              infoSources={['NorthstarMS', 'ConnectWise PSA', 'IT Discovery Scan']}
+              infoDefinition="Before/after metrics from NorthstarMS telemetry and ConnectWise delivery data, mapped to business impact."
               defaultOpen
             >
               <div className="space-y-2">
@@ -405,6 +543,12 @@ export function QBRExecBriefTab({ account }: { account: AccountData }) {
                   <Plus className="w-3 h-3" /> Add metric
                 </button>
               </div>
+              <SectionChat
+                sectionTitle="Technical Metrics → Business Outcomes"
+                accountName={account.name}
+                context={outcomes.map(o => `${o.metric}: Before: ${o.before} → After: ${o.after}. Impact: ${o.impact}${o.technicalSignal ? `. Signal: ${o.technicalSignal}` : ''}`).join('\n')}
+                compact
+              />
             </CollapsibleCard>
           </>
         )}

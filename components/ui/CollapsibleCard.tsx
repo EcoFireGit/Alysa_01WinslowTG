@@ -2,6 +2,7 @@
 
 import { useState, ReactNode } from 'react'
 import { ChevronDown } from 'lucide-react'
+import { InfoTooltip } from '@/components/InfoTooltip'
 
 interface CollapsibleCardProps {
   title: string
@@ -12,6 +13,8 @@ interface CollapsibleCardProps {
   headerExtra?: ReactNode
   className?: string
   children: ReactNode
+  infoSources?: string[]
+  infoDefinition?: string
 }
 
 export function CollapsibleCard({
@@ -23,6 +26,8 @@ export function CollapsibleCard({
   headerExtra,
   className = '',
   children,
+  infoSources,
+  infoDefinition,
 }: CollapsibleCardProps) {
   const [open, setOpen] = useState(defaultOpen)
 
@@ -38,6 +43,15 @@ export function CollapsibleCard({
         <div className="flex items-center gap-2 min-w-0 flex-1">
           {icon && <span className="flex-shrink-0" style={{ color: 'var(--text-secondary)' }}>{icon}</span>}
           <span className="text-sm font-semibold" style={{ color: 'var(--text-hover)' }}>{title}</span>
+          {infoSources && (
+            <span onClick={e => e.stopPropagation()}>
+              <InfoTooltip
+                title={title}
+                definition={infoDefinition ?? `Data powering the ${title} section.`}
+                sources={infoSources}
+              />
+            </span>
+          )}
           {badge}
           {subtitle && (
             <span className="text-xs ml-1" style={{ color: 'var(--text-muted)' }}>{subtitle}</span>

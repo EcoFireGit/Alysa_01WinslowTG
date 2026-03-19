@@ -73,6 +73,11 @@ export const accountDetailData: AccountData[] = [
       '"Our insurance auditor is asking for a DR runbook and we don\'t have one."',
       '"If the Nutanix goes down during a production run, we\'re shut down for the day."',
     ],
+    customerSaidMeta: [
+      { source: 'Fathom — QBR Prep Call', timestamp: 'Jan 15, 2026' },
+      { source: 'ConnectWise PSA — Account Note', timestamp: 'Jan 22, 2026' },
+      { source: 'Fathom — Monthly Check-in', timestamp: 'Feb 3, 2026' },
+    ],
     weObserved: [
       'Commvault: 0% backup success rate for 11 days on ERP dataset — no ticket raised by internal IT (ConnectWise)',
       'Nutanix: 3 capacity threshold alerts over 7 days — no remediation action taken',
@@ -167,7 +172,7 @@ export const accountDetailData: AccountData[] = [
     qbrDelivered: ['99.4% uptime on all monitored endpoints', 'Resolved 3 critical SCADA polling errors', 'Microsoft 365 license optimization — saved $4,200 annually'],
     qbrRisks: ['Commvault backup failure — 11 days undetected, remediation in progress', 'Nutanix capacity — must expand before automation rollout'],
     qbrOpportunities: ['Nutanix node expansion: $65K, 4-week lead time', 'DR planning engagement: $28K, required for insurance renewal'],
-    qbrNextSteps: ['Close Nutanix expansion SOW by end of month', 'Complete backup alerting integration this week', 'Schedule DR planning kickoff for Q2'],
+    qbrNextSteps: ['Review Nutanix capacity roadmap together — we want to make sure your automation rollout has the infrastructure headroom it needs before go-live', 'Complete backup alerting integration this week', 'Schedule DR planning kickoff for Q2'],
     industryInsights: [
       'Forrester (2025): 67% of manufacturing firms cite unplanned downtime as their top IT risk — proactive monitoring vendors with embedded alerting see 2.3x higher renewal rates.',
       'IDC (2024): Manufacturing companies investing in HCI modernization see 34% reduction in infrastructure management overhead — the ROI case for Nutanix expansion writes itself.',
@@ -248,6 +253,11 @@ export const accountDetailData: AccountData[] = [
       '"Our auditors are asking about SOC 2 and we don\'t have a clear answer."',
       '"I need to know what we\'re actually getting for what we\'re paying."',
       '"We might need a firm that specializes more in financial sector compliance."',
+    ],
+    customerSaidMeta: [
+      { source: 'Fathom — Strategy Session', timestamp: 'Feb 10, 2026' },
+      { source: 'ConnectWise PSA — Account Note', timestamp: 'Jan 28, 2026' },
+      { source: 'MS Teams — Direct Message', timestamp: 'Feb 14, 2026' },
     ],
     weObserved: [
       'ConnectWise: only reactive tickets in 35 days — zero strategic engagement requests',
@@ -423,6 +433,11 @@ export const accountDetailData: AccountData[] = [
       '"I don\'t have time to be the IT person AND the office manager."',
       '"We know we should be doing more on security but nobody has pushed us on it."',
     ],
+    customerSaidMeta: [
+      { source: 'Fathom — Monthly Check-in', timestamp: 'Feb 5, 2026' },
+      { source: 'Fathom — Monthly Check-in', timestamp: 'Feb 5, 2026' },
+      { source: 'ConnectWise PSA — Account Note', timestamp: 'Jan 19, 2026' },
+    ],
     weObserved: [
       'ConnectWise: 14 OneDrive sync tickets in 30 days — attorneys bypassing cloud storage',
       'NorthstarMS monitoring: local file share usage still at 78% — cloud adoption not progressing',
@@ -585,6 +600,11 @@ export const accountDetailData: AccountData[] = [
       '"Our doctors are complaining about Epic being slow in the mornings — that\'s unacceptable."',
       '"HIPAA is coming and I need to know we\'re covered."',
       '"I want NorthstarMS to be more proactive, not just fix things after we report them."',
+    ],
+    customerSaidMeta: [
+      { source: 'Fathom — Clinical IT Review', timestamp: 'Feb 12, 2026' },
+      { source: 'Fathom — Clinical IT Review', timestamp: 'Feb 12, 2026' },
+      { source: 'ConnectWise PSA — Account Note', timestamp: 'Feb 1, 2026' },
     ],
     weObserved: [
       'NorthstarMS monitoring: Epic response time >4s during 8–10am, returning to <1s by 10:30am — storage I/O contention pattern',
@@ -749,6 +769,11 @@ export const accountDetailData: AccountData[] = [
       '"I asked for a cloud roadmap months ago and I\'m still waiting."',
       '"What exactly are we paying for? I want to see the value."',
     ],
+    customerSaidMeta: [
+      { source: 'MS Teams — Direct Message', timestamp: 'Jan 30, 2026' },
+      { source: 'ConnectWise PSA — Account Note', timestamp: 'Feb 7, 2026' },
+      { source: 'Fathom — QBR Prep Call', timestamp: 'Feb 18, 2026' },
+    ],
     weObserved: [
       'ConnectWise: 8 Teams file-sharing tickets — consultants not using SharePoint properly',
       'NorthstarMS: Sage server disk at 78% with 12% monthly growth — 90% threshold in ~90 days',
@@ -911,6 +936,11 @@ export const accountDetailData: AccountData[] = [
       '"If you could tie the Samsara data into our operations view, that would be a game-changer."',
       '"We have zero IT issues — that\'s exactly what I need to run this operation."',
       '"I tell everyone about NorthstarMS. You\'ve made my job so much easier."',
+    ],
+    customerSaidMeta: [
+      { source: 'Fathom — Executive Strategy Call', timestamp: 'Mar 4, 2026' },
+      { source: 'Fathom — Executive Strategy Call', timestamp: 'Mar 4, 2026' },
+      { source: 'Fathom — Executive Strategy Call', timestamp: 'Mar 4, 2026' },
     ],
     weObserved: [
       'NorthstarMS: 99.8% uptime across all 3 warehouses for 6 months — zero critical incidents',
@@ -1075,6 +1105,11 @@ export const accountDetailData: AccountData[] = [
       '"Our enterprise prospects are asking about ISO 27001 and we need to move on that."',
       '"I want NorthstarMS involved in the DevOps pipeline conversation — you understand our stack."',
     ],
+    customerSaidMeta: [
+      { source: 'Fathom — Phase 1 Debrief', timestamp: 'Feb 25, 2026' },
+      { source: 'Fathom — Phase 1 Debrief', timestamp: 'Feb 25, 2026' },
+      { source: 'MS Teams — Engineering Channel', timestamp: 'Mar 2, 2026' },
+    ],
     weObserved: [
       'NorthstarMS: 99.9% uptime on Azure workloads since Phase 1 migration — zero cloud incidents',
       'ConnectWise: developer productivity tickets down 65% since Azure migration — validation of Phase 1 ROI',
@@ -1237,6 +1272,11 @@ export const accountDetailData: AccountData[] = [
       '"Our Google contract is coming up — I\'ve been wondering if Microsoft 365 for Education makes more sense now."',
       '"We have a lot of EdTech apps and I\'m not sure all of them have proper FERPA agreements in place."',
       '"The Chromebooks are basically unmanaged from an IT policy standpoint and that worries me."',
+    ],
+    customerSaidMeta: [
+      { source: 'Fathom — IT Planning Session', timestamp: 'Mar 10, 2026' },
+      { source: 'Fathom — IT Planning Session', timestamp: 'Mar 10, 2026' },
+      { source: 'ConnectWise PSA — Account Note', timestamp: 'Feb 20, 2026' },
     ],
     weObserved: [
       'NorthstarMS: 99.4% uptime on all staff Windows endpoints — Chromebooks outside current monitoring scope',
