@@ -2,15 +2,18 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Building2, Sparkles, UserCircle, Layers, PlayCircle, FileText, MessageSquareText, ArrowLeft } from 'lucide-react'
+import { Building2, Sparkles, UserCircle, Layers, PlayCircle, FileText, MessageSquareText, ShieldCheck, Presentation, EyeOff, ArrowLeft } from 'lucide-react'
 import { getAccountBySlug } from '@/lib/accountDetailData'
 import { ClientProfileTab } from './ClientProfileTab'
 import { GapAnalysisTab } from './GapAnalysisTab'
 import { PlanPlaysTab } from './PlanPlaysTab'
 import { QBRExecBriefTab } from './QBRExecBriefTab'
 import { OutcomesFeedbackTab } from './OutcomesFeedbackTab'
+import { GovernanceAuditTab } from './GovernanceAuditTab'
+import { ProofOfValueTab } from './ProofOfValueTab'
+import { BlindspotDetectionTab } from './BlindspotDetectionTab'
 
-type TabId = 'profile' | 'gaps' | 'plays' | 'qbr' | 'outcomes'
+type TabId = 'profile' | 'gaps' | 'plays' | 'qbr' | 'outcomes' | 'governance' | 'pov' | 'blindspot'
 
 const TABS: { id: TabId; label: string; icon: React.ReactNode; tooltip: string }[] = [
   { id: 'profile', label: 'Client Profile', icon: <UserCircle className="w-4 h-4" />, tooltip: 'Capture and organize client intel' },
@@ -18,6 +21,9 @@ const TABS: { id: TabId; label: string; icon: React.ReactNode; tooltip: string }
   { id: 'plays', label: 'Plan & Plays', icon: <PlayCircle className="w-4 h-4" />, tooltip: 'Action plans and discovery plays' },
   { id: 'qbr', label: 'QBR / Exec Brief', icon: <FileText className="w-4 h-4" />, tooltip: 'Generate a client-facing executive summary' },
   { id: 'outcomes', label: 'Outcomes & Feedback', icon: <MessageSquareText className="w-4 h-4" />, tooltip: 'Track recommendation accuracy' },
+  { id: 'governance', label: 'Governance Audit', icon: <ShieldCheck className="w-4 h-4" />, tooltip: 'Automated scan of ticket and project data against global delivery standards' },
+  { id: 'pov', label: 'Proof of Value', icon: <Presentation className="w-4 h-4" />, tooltip: 'Convert delivery logs into board-ready slides that justify contract renewal' },
+  { id: 'blindspot', label: 'Blindspot Detection', icon: <EyeOff className="w-4 h-4" />, tooltip: 'Identify risk in accounts that look green on paper but have declining engagement or quiet stakeholders' },
 ]
 
 export function AccountDetailView({ accountId }: { accountId: string }) {
@@ -146,6 +152,9 @@ export function AccountDetailView({ accountId }: { accountId: string }) {
         {activeTab === 'plays' && <PlanPlaysTab account={account} />}
         {activeTab === 'qbr' && <QBRExecBriefTab account={account} />}
         {activeTab === 'outcomes' && <OutcomesFeedbackTab account={account} />}
+        {activeTab === 'governance' && <GovernanceAuditTab account={account} />}
+        {activeTab === 'pov' && <ProofOfValueTab account={account} />}
+        {activeTab === 'blindspot' && <BlindspotDetectionTab account={account} />}
       </div>
     </div>
   )

@@ -52,7 +52,7 @@ export function Sidebar({ onAccountClick, onAskAbout, onNewChat }: SidebarProps)
           </div>
           <div>
             <div className="text-sm font-semibold" style={{ color: 'var(--text-hover)' }}>Alysa</div>
-            <div className="text-xs" style={{ color: 'var(--accent)' }}>NorthstarMS Intelligence</div>
+            <div className="text-xs" style={{ color: 'var(--accent)' }}>HCLTech Intelligence</div>
           </div>
         </div>
         <button onClick={() => setCollapsed(true)} className="w-6 h-6 rounded flex items-center justify-center"

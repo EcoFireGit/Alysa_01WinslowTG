@@ -22,7 +22,7 @@ export default function Home() {
   }, [theme])
 
   function handleAccountClick(account: Account) {
-    const prompt = `Give me a full NorthstarMS deep dive on ${account.name} — risk analysis, sentiment, data health gaps, and recommended next actions.`
+    const prompt = `Give me a full HCLTech deep dive on ${account.name} — risk analysis, sentiment, data health gaps, and recommended next actions.`
     setInitialPrompt(prompt)
     setChatKey(prev => prev + 1)
   }
@@ -57,13 +57,7 @@ export default function Home() {
           style={{ borderBottom: '1px solid var(--border-subtle)', background: 'var(--bg)' }}
         >
           <div className="flex items-center gap-3">
-            <div className="text-sm font-medium" style={{ color: 'var(--text-hover)' }}>NorthstarMS Intelligence Engine</div>
-            <div
-              className="text-xs px-2 py-0.5 rounded-full"
-              style={{ background: 'var(--accent-bg)', color: 'var(--accent-light)', border: '1px solid var(--accent-border)' }}
-            >
-              claude-opus-4-6
-            </div>
+            <div className="text-sm font-medium" style={{ color: 'var(--text-hover)' }}>HCLTech Intelligence Engine</div>
           </div>
           <div className="flex items-center gap-3 text-xs" style={{ color: 'var(--text-muted)' }}>
             <span>$2.1M ARR · 8 accounts</span>

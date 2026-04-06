@@ -32,7 +32,7 @@ const SUGGESTED_PROMPTS = [
   'Which accounts have Quiet Risk — silent backup failures the client hasn\'t reported yet?',
   'Which accounts are in the Security Red Zone and what\'s the vCISO action plan?',
   'Show all Nutanix capacity triggers and draft expansion SOW summaries',
-  'Generate a QBR value story pack for all 8 accounts using NorthstarMS data',
+  'Generate a QBR value story pack for all 8 accounts using HCLTech data',
   'What is the full MRR expansion pipeline — Copilot, security retainers, and infra SOWs?',
   'Build a Trusted Advisor briefing for Thornfield Financial to address the Red Zone situation',
 ]
@@ -149,7 +149,7 @@ export function ChatInterface({ onFeedback, initialPrompt }: ChatInterfaceProps)
             </div>
             <h2 className="text-xl font-semibold mb-2" style={{ color: 'var(--text-hover)' }}>Alysa</h2>
             <p className="text-sm mb-8 max-w-sm" style={{ color: 'var(--text-secondary)' }}>
-              Your NorthstarMS Intelligence Engine. Surface Quiet Risks, flag Security Red Zones, detect infrastructure capacity triggers, and build QBR value stories — automatically.
+              Your HCLTech Intelligence Engine. Surface Quiet Risks, flag Security Red Zones, detect infrastructure capacity triggers, and build QBR value stories — automatically.
             </p>
             <div className="grid grid-cols-2 gap-2 w-full max-w-xl">
               {SUGGESTED_PROMPTS.map((prompt) => (
@@ -216,7 +216,7 @@ export function ChatInterface({ onFeedback, initialPrompt }: ChatInterfaceProps)
           </div>
           <div className="text-center mt-2">
             <span className="text-xs" style={{ color: 'var(--text-faint)' }}>
-              Alysa uses NorthstarMS · Commvault · CrowdStrike · Zscaler · Nutanix · M365
+              Alysa uses HCLTech · Commvault · CrowdStrike · Zscaler · Nutanix · M365
             </span>
           </div>
         </div>
