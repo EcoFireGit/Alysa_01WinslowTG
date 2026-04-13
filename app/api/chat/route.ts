@@ -9,7 +9,7 @@ export async function POST(request: Request) {
   const { messages } = await request.json()
 
   const stream = await client.messages.stream({
-    model: 'claude-opus-4-6',
+    model: 'claude-sonnet-4-6',
     max_tokens: 4096,
     system: ALYSA_SYSTEM_PROMPT,
     messages,
