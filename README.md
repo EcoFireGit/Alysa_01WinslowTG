@@ -1,6 +1,6 @@
 # Alysa — NorthstarMS Intelligence Engine
 
-Alysa is a Next.js 14 AI-powered Customer Success Intelligence Engine for NorthstarMS. It gives Account Managers and vCIOs a single workspace to understand their client portfolio, detect risks before clients do, surface expansion opportunities, and build QBR materials automatically — without cobbling data from multiple tools.
+Alysa is a Next.js 14 AI-powered Customer Success Intelligence Engine for NorthstarMS. It gives Delivery Managers and Account Managers at Winslow Technology Group a single workspace to understand their client portfolio, detect risks before clients do, surface expansion opportunities, and build QBR materials automatically — without cobbling data from multiple tools.
 
 ## Quick Start
 
@@ -35,11 +35,12 @@ Each account has five tabs:
 
 #### Client Profile
 Captures everything that makes a client relationship strategic — not just what's in the ticket queue:
-- **Business Goals & Constraints** — sourced from Fathom transcripts and CRM notes
+- **Business Goals & Constraints** — sourced from Fathom transcripts and CRM notes; each section shows its data sources via an inline tooltip
 - **Stakeholders & Decisions** — with sentiment scoring (Champion / Advocate / Neutral / Detractor)
 - **Recent Intel & Inferences** — AI-generated inferences from LinkedIn, Fathom, NorthstarMS, and ConnectWise signals, with thumbs-up/down feedback
 - **Tech Stack** — what they run, what's your wallet share, what's third-party
 - **Wallet Share + Expansion Whitespace** — current ARR vs. estimated total IT spend, with top expansion opportunities
+- Every section has an **Ask AI** toggle — ask Alysa a question scoped to that section's data without leaving the tab
 
 #### Gap Analysis
 The internal view of where the account stands vs. where it needs to go:
@@ -53,27 +54,30 @@ The internal view of where the account stands vs. where it needs to go:
 - **Discovery Plays** — templated question frameworks matched to the account situation, copyable to clipboard
 
 #### QBR / Exec Brief
-A structured, data-driven QBR built automatically from account signals — five sections:
+A structured, outcomes-focused QBR built automatically from account signals — opens with a title card (account name, date, editable presenter name), then five sections:
 
 | Section | What it shows |
 |---|---|
-| **Delivered This Quarter** | Editable deliverables checklist + visual Before → After metric cards mapped to business outcomes |
-| **Business Priorities** | Client's stated priorities from Fathom transcripts — numbered and editable |
+| **Delivered This Quarter** | Editable deliverables checklist + Before → After visual cards (red/green) for each business metric, with a business impact bar |
+| **Business Priorities** | Client's stated priorities captured from Fathom transcripts — numbered, editable |
 | **Industry Insights** | Curated Forrester, IDC, and Gartner research relevant to the client's sector |
-| **Outcomes Driven Partnership** | Expansion opportunities framed as outcome improvements — product, potential ARR, confidence, and the reason it matters to the client |
-| **Next Steps** | Icon-typed action items: 🤝 introductions, 🎟️ conference invitations, 📋 proposal reviews, ⚙️ deployments, 📅 meetings |
+| **Outcomes Driven Partnership** | Expansion opportunities as structured cards — product, potential ARR, confidence badge, and outcome reason |
+| **Next Steps** | Icon-typed action items auto-detected by keyword: 🤝 introductions, 🎟️ conference invitations, 📋 proposal reviews, ⚙️ deployments, 📅 meetings |
 
-Every item in the QBR is editable inline. Export to PowerPoint in one click.
+Every section is editable inline, has a data source tooltip, and has an **Ask AI** button. Export to PowerPoint in one click.
 
 #### Outcomes & Feedback
 Tracks recommendation accuracy over time — did Alysa's gap analysis lead to the right outcomes? Feeds the account's data health score.
 
 ### AI Chat
-The right panel is a conversational interface to the full portfolio. Ask questions across all 8 accounts or drill into a specific situation. Suggested prompts include:
+The right panel is a conversational interface to the full portfolio. Ask questions across all 8 accounts or drill into a specific situation. Alysa frames responses by role — Delivery Manager (operational risk, SLA, escalation) vs Account Manager (QBR narrative, renewal health, expansion). Suggested prompts include:
 - Quiet Risk audit across all accounts
 - QBR value story pack for the full portfolio
-- Security Red Zone report with vCISO action plan
-- MRR expansion pipeline summary
+- Delivery escalation risk report
+- ARR expansion pipeline summary
+
+### Data Sources Panel
+The sidebar footer shows all integrated data sources grouped by category (CRM & Engagement, ITSM, Security, Backup, Infrastructure, Industry Research), each with a live / partial / planned status indicator. Individual `CollapsibleCard` sections across account tabs show which specific sources power each data point via an inline tooltip.
 
 ---
 
@@ -81,7 +85,7 @@ The right panel is a conversational interface to the full portfolio. Ask questio
 
 ### Stack
 - **Next.js 14** (App Router) + **React 18** + **TypeScript**
-- **Anthropic SDK** (`@anthropic-ai/sdk`) — model: `claude-opus-4-6`, streamed via SSE
+- **Anthropic SDK** (`@anthropic-ai/sdk`) — model: `claude-sonnet-4-6`, streamed via SSE
 - **Tailwind CSS** with CSS custom property theming (dark/light)
 - **pptxgenjs** — PowerPoint export from QBR tab
 - No external state management — all local `useState`
@@ -119,13 +123,17 @@ components/
   AccountCard.tsx             — expandable card: scores, backup, security, infra, value story
   RedFlagBriefing.tsx         — daily Quiet Risk flag panel
   ChatInterface.tsx           — message state, streaming, voice input
+  Sidebar.tsx                 — Portfolio / History tabs + collapsible Data Sources panel (footer)
+  ui/
+    CollapsibleCard.tsx       — card wrapper; supports infoSources/infoDefinition for data source tooltips
   account/
     AccountDetailView.tsx     — tab shell + sticky header
-    ClientProfileTab.tsx      — goals, stakeholders, intel, tech stack, wallet share
-    GapAnalysisTab.tsx        — customer voice, gap rows, narrative, pipeline
+    ClientProfileTab.tsx      — goals, stakeholders, intel, tech stack, wallet share; SectionChat on every card
+    GapAnalysisTab.tsx        — customer voice (with source+timestamp meta), gap rows, narrative, pipeline
     PlanPlaysTab.tsx           — active plays + discovery play templates
-    QBRExecBriefTab.tsx        — 5-section QBR: delivered, priorities, insights, partnership, next steps
+    QBRExecBriefTab.tsx        — title card + 5-section QBR; SectionChat per section, data source tooltips
     OutcomesFeedbackTab.tsx    — recommendation accuracy tracking
+    SectionChat.tsx            — per-section AI chat panel with emoji reactions and streaming responses
 
 lib/
   accounts.ts                 — 8 portfolio accounts (sidebar/dashboard data)
@@ -136,7 +144,10 @@ lib/
 ```
 
 ### Portfolio Data
-All 8 accounts are defined statically in `lib/accountDetailData.ts`. Each `AccountData` object includes goals, stakeholders, tech stack, gap rows, plays, business outcomes, industry insights, and QBR content. The sidebar uses the lighter `lib/accounts.ts` for portfolio-level signals (backup health, security posture, infra capacity).
+All 8 accounts are defined statically in `lib/accountDetailData.ts`. Each `AccountData` object includes goals, stakeholders, tech stack, gap rows, plays, business outcomes, industry insights, QBR content, and `customerSaidMeta` (source + timestamp for each customer quote). The sidebar uses the lighter `lib/accounts.ts` for portfolio-level signals (backup health, security posture, infra capacity).
+
+### AI Persona
+`lib/system-prompt.ts` defines the Alysa persona scoped to two primary roles: **Delivery Manager** (operational risk, SLA, escalation) and **Account Manager** (QBR narrative, renewal, ARR expansion). WTG is positioned as a "Strategic Technology Partner." The system prompt is sent on every `/api/chat` call.
 
 ---
 
@@ -144,6 +155,6 @@ All 8 accounts are defined statically in `lib/accountDetailData.ts`. Each `Accou
 
 | Variable | Required | Description |
 |---|---|---|
-| `ANTHROPIC_API_KEY` | Yes | Anthropic API key for Claude claude-opus-4-6 |
+| `ANTHROPIC_API_KEY` | Yes | Anthropic API key for Claude claude-sonnet-4-6 |
 
 No database or external services required — all account data is local to `lib/`.
