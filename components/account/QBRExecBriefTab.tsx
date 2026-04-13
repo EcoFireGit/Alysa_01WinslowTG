@@ -1,12 +1,15 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { CheckCircle2, ArrowRight, ShieldAlert, Lightbulb, FileText, Download, Minimize2, Maximize2, Plus, Trash2, Pencil, Check, X, BarChart2, Loader2 } from 'lucide-react'
+import {
+  CheckCircle2, ArrowRight, Lightbulb, FileText, Download,
+  Plus, Trash2, Pencil, Check, X, BarChart2, Loader2,
+  User2, CalendarDays, Globe, TrendingUp, Handshake,
+} from 'lucide-react'
 import { CollapsibleCard } from '@/components/ui/CollapsibleCard'
-import { AccountData } from '@/lib/types'
+import { SectionChat } from './SectionChat'
+import { AccountData, ExpansionOpp } from '@/lib/types'
 import { exportQBRtoPPT } from '@/lib/exportPPT'
-
-type Mode = 'standard' | 'executive'
 
 // ── Inline editable text item ──────────────────────────────────────────────
 function EditableItem({
@@ -50,15 +53,13 @@ function EditableItem({
             ref={ref}
             value={draft}
             onChange={e => setDraft(e.target.value)}
-            onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); save() } if (e.key === 'Escape') cancel() }}
+            onKeyDown={e => {
+              if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); save() }
+              if (e.key === 'Escape') cancel()
+            }}
             rows={2}
             className="w-full text-sm rounded-lg px-2 py-1.5 resize-none"
-            style={{
-              background: 'var(--bg)',
-              border: '1px solid var(--accent-border)',
-              color: 'var(--text-primary)',
-              outline: 'none',
-            }}
+            style={{ background: 'var(--bg)', border: '1px solid var(--accent-border)', color: 'var(--text-primary)', outline: 'none' }}
           />
           <div className="flex gap-1.5">
             <button onClick={save} className="flex items-center gap-1 text-xs px-2 py-1 rounded" style={{ background: 'var(--accent)', color: '#fff' }}>
@@ -89,7 +90,7 @@ function EditableItem({
   )
 }
 
-// ── Editable list card ─────────────────────────────────────────────────────
+// ── Editable list ──────────────────────────────────────────────────────────
 function EditableList({
   items,
   onChange,
@@ -112,10 +113,7 @@ function EditableList({
   }, [adding])
 
   function addItem() {
-    if (newItem.trim()) {
-      onChange([...items, newItem.trim()])
-      setNewItem('')
-    }
+    if (newItem.trim()) { onChange([...items, newItem.trim()]); setNewItem('') }
     setAdding(false)
   }
 
@@ -124,7 +122,8 @@ function EditableList({
       {items.map((item, i) => (
         <div key={i} className="flex items-start gap-2">
           {numbered && (
-            <span className="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold mt-0.5" style={{ background: 'rgba(87,94,207,0.15)', color: 'var(--accent)' }}>{i + 1}</span>
+            <span className="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold mt-0.5"
+              style={{ background: 'rgba(87,94,207,0.15)', color: 'var(--accent)' }}>{i + 1}</span>
           )}
           <div className="flex-1">
             <EditableItem
@@ -137,15 +136,20 @@ function EditableList({
           </div>
         </div>
       ))}
-
       {adding ? (
         <div className="flex items-center gap-2">
-          {numbered && <span className="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold" style={{ background: 'rgba(87,94,207,0.15)', color: 'var(--accent)' }}>{items.length + 1}</span>}
+          {numbered && (
+            <span className="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold"
+              style={{ background: 'rgba(87,94,207,0.15)', color: 'var(--accent)' }}>{items.length + 1}</span>
+          )}
           <input
             ref={addRef}
             value={newItem}
             onChange={e => setNewItem(e.target.value)}
-            onKeyDown={e => { if (e.key === 'Enter') addItem(); if (e.key === 'Escape') { setAdding(false); setNewItem('') } }}
+            onKeyDown={e => {
+              if (e.key === 'Enter') addItem()
+              if (e.key === 'Escape') { setAdding(false); setNewItem('') }
+            }}
             placeholder="Type and press Enter..."
             className="flex-1 text-sm rounded-lg px-2 py-1.5"
             style={{ background: 'var(--bg)', border: '1px solid var(--accent-border)', color: 'var(--text-primary)', outline: 'none' }}
@@ -154,11 +158,8 @@ function EditableList({
           <button onClick={() => { setAdding(false); setNewItem('') }} className="p-1.5 rounded-lg" style={{ background: 'var(--surface)', color: 'var(--text-muted)', border: '1px solid var(--border-subtle)' }}><X className="w-3.5 h-3.5" /></button>
         </div>
       ) : (
-        <button
-          onClick={() => setAdding(true)}
-          className="flex items-center gap-1.5 text-xs px-2 py-1 rounded-lg mt-1"
-          style={{ color: 'var(--text-muted)', border: '1px dashed var(--border-subtle)' }}
-        >
+        <button onClick={() => setAdding(true)} className="flex items-center gap-1.5 text-xs px-2 py-1 rounded-lg mt-1"
+          style={{ color: 'var(--text-muted)', border: '1px dashed var(--border-subtle)' }}>
           <Plus className="w-3 h-3" /> Add item
         </button>
       )}
@@ -166,14 +167,10 @@ function EditableList({
   )
 }
 
-// ── Editable outcome row ───────────────────────────────────────────────────
-type OutcomeRow = { metric: string; before: string; after: string; impact: string; technicalSignal?: string }
+// ── Before/After outcome card ──────────────────────────────────────────────
+type OutcomeRow = { metric: string; before: string; after: string; impact: string }
 
-function EditableOutcomeRow({
-  row,
-  onChange,
-  onDelete,
-}: {
+function OutcomeCard({ row, onChange, onDelete }: {
   row: OutcomeRow
   onChange: (r: OutcomeRow) => void
   onDelete: () => void
@@ -186,18 +183,12 @@ function EditableOutcomeRow({
 
   if (editing) {
     return (
-      <div className="rounded-lg p-3 space-y-2" style={{ background: 'var(--bg)', border: '1px solid var(--accent-border)' }}>
-        {[
-          { key: 'metric', label: 'Metric / Outcome' },
-          { key: 'technicalSignal', label: 'Technical Signal' },
-          { key: 'before', label: 'Before' },
-          { key: 'after', label: 'After' },
-          { key: 'impact', label: 'Business Impact' },
-        ].map(({ key, label }) => (
+      <div className="rounded-xl p-4 space-y-2" style={{ background: 'var(--bg)', border: '1px solid var(--accent-border)' }}>
+        {([['metric', 'Metric / Outcome'], ['before', 'Before'], ['after', 'After'], ['impact', 'Business Impact']] as [keyof OutcomeRow, string][]).map(([key, label]) => (
           <div key={key}>
             <div className="text-xs mb-0.5" style={{ color: 'var(--text-muted)' }}>{label}</div>
             <input
-              value={(draft as any)[key] ?? ''}
+              value={draft[key]}
               onChange={e => setDraft(d => ({ ...d, [key]: e.target.value }))}
               className="w-full text-sm rounded px-2 py-1"
               style={{ background: 'var(--surface)', border: '1px solid var(--border-subtle)', color: 'var(--text-primary)', outline: 'none' }}
@@ -213,92 +204,117 @@ function EditableOutcomeRow({
   }
 
   return (
-    <div className="group rounded-lg p-3 relative" style={{ background: 'var(--bg)', border: '1px solid var(--border-faint)' }}>
-      <div className="flex items-start justify-between gap-2 mb-2">
-        <div className="text-xs font-semibold" style={{ color: 'var(--text-muted)' }}>{row.metric}</div>
+    <div className="group rounded-xl overflow-hidden" style={{ background: 'var(--bg)', border: '1px solid var(--border-faint)' }}>
+      {/* metric + edit controls */}
+      <div className="flex items-center justify-between px-4 pt-3 pb-2">
+        <span className="text-xs font-semibold" style={{ color: 'var(--text-hover)' }}>{row.metric}</span>
         <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
           <button onClick={() => { setDraft(row); setEditing(true) }} className="p-0.5 rounded" style={{ color: 'var(--text-muted)' }}><Pencil className="w-3 h-3" /></button>
           <button onClick={onDelete} className="p-0.5 rounded" style={{ color: '#f87171' }}><Trash2 className="w-3 h-3" /></button>
         </div>
       </div>
-      {row.technicalSignal && (
-        <div className="text-xs mb-2 px-2 py-1 rounded" style={{ background: 'rgba(87,94,207,0.08)', color: 'var(--accent)', border: '1px solid var(--accent-border)' }}>
-          📡 {row.technicalSignal}
+
+      {/* before → after visual */}
+      <div className="flex items-stretch gap-0 px-4 pb-3">
+        <div className="flex-1 rounded-lg px-3 py-2 text-center" style={{ background: 'rgba(248,113,113,0.08)', border: '1px solid rgba(248,113,113,0.18)' }}>
+          <div className="text-xs mb-1" style={{ color: 'var(--text-muted)' }}>Before</div>
+          <div className="text-sm font-bold" style={{ color: '#f87171' }}>{row.before}</div>
         </div>
-      )}
-      <div className="grid grid-cols-3 gap-2 text-xs">
-        <div>
-          <div style={{ color: 'var(--text-muted)' }}>Before</div>
-          <div style={{ color: '#f87171', fontWeight: 600 }}>{row.before}</div>
+        <div className="flex items-center px-2">
+          <ArrowRight className="w-4 h-4" style={{ color: 'var(--text-muted)' }} />
         </div>
-        <div>
-          <div style={{ color: 'var(--text-muted)' }}>After</div>
-          <div style={{ color: '#4ade80', fontWeight: 600 }}>{row.after}</div>
+        <div className="flex-1 rounded-lg px-3 py-2 text-center" style={{ background: 'rgba(74,222,128,0.08)', border: '1px solid rgba(74,222,128,0.18)' }}>
+          <div className="text-xs mb-1" style={{ color: 'var(--text-muted)' }}>After</div>
+          <div className="text-sm font-bold" style={{ color: '#4ade80' }}>{row.after}</div>
         </div>
-        <div>
-          <div style={{ color: 'var(--text-muted)' }}>Impact</div>
-          <div style={{ color: 'var(--accent)', fontWeight: 600 }}>{row.impact}</div>
+      </div>
+
+      {/* impact bar */}
+      <div className="px-4 pb-3">
+        <div className="rounded-lg px-3 py-2 flex items-center gap-2" style={{ background: 'rgba(87,94,207,0.07)', border: '1px solid var(--accent-border-medium, rgba(87,94,207,0.18))' }}>
+          <TrendingUp className="w-3.5 h-3.5 flex-shrink-0" style={{ color: 'var(--accent)' }} />
+          <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>{row.impact}</span>
         </div>
       </div>
     </div>
   )
 }
 
+// ── Opportunity card ───────────────────────────────────────────────────────
+const CONFIDENCE_COLORS = {
+  High:   { color: '#4ade80', bg: 'rgba(74,222,128,0.1)',   border: 'rgba(74,222,128,0.25)' },
+  Medium: { color: '#facc15', bg: 'rgba(250,204,21,0.1)',   border: 'rgba(250,204,21,0.25)' },
+  Low:    { color: '#94a3b8', bg: 'rgba(148,163,184,0.1)', border: 'rgba(148,163,184,0.25)' },
+}
+
+function OpportunityCard({ opp }: { opp: ExpansionOpp }) {
+  const conf = CONFIDENCE_COLORS[opp.confidence]
+  return (
+    <div className="rounded-xl p-4 space-y-2" style={{ background: 'var(--bg)', border: '1px solid var(--border-faint)' }}>
+      <div className="flex items-start justify-between gap-3">
+        <span className="text-sm font-semibold" style={{ color: 'var(--text-hover)' }}>{opp.product}</span>
+        <div className="flex items-center gap-2 flex-shrink-0">
+          <span className="text-xs font-bold" style={{ color: '#4ade80' }}>{opp.potential}</span>
+          <span className="text-xs px-1.5 py-0.5 rounded-full font-medium"
+            style={{ background: conf.bg, color: conf.color, border: `1px solid ${conf.border}` }}>
+            {opp.confidence}
+          </span>
+        </div>
+      </div>
+      <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{opp.reason}</p>
+    </div>
+  )
+}
+
+// ── Next step icon detection ───────────────────────────────────────────────
+function nextStepIcon(text: string): string {
+  const t = text.toLowerCase()
+  if (t.includes('introduc') || t.includes('meet') || t.includes('cto') || t.includes('cfo') || t.includes('ceo') || t.includes('exec')) return '🤝'
+  if (t.includes('conference') || t.includes('summit') || t.includes('event') || t.includes('invitation') || t.includes('invite')) return '🎟️'
+  if (t.includes('proposal') || t.includes('sow') || t.includes('migration') || t.includes('review') || t.includes('cloud')) return '📋'
+  if (t.includes('deploy') || t.includes('implement') || t.includes('enroll') || t.includes('install')) return '⚙️'
+  return '📅'
+}
+
 // ── Main tab ───────────────────────────────────────────────────────────────
 export function QBRExecBriefTab({ account }: { account: AccountData }) {
-  const [mode, setMode] = useState<Mode>('standard')
   const [exporting, setExporting] = useState(false)
+
+  const [delivered, setDelivered] = useState(account.qbrDelivered)
+  const [outcomes, setOutcomes] = useState<OutcomeRow[]>(account.businessOutcomes)
+  const [priorities, setPriorities] = useState(account.qbrPriorities)
+  const [nextSteps, setNextSteps] = useState(account.qbrNextSteps)
+
+  const [presentedBy, setPresentedBy] = useState('Marcus Reilly')
+  const [editingPresenter, setEditingPresenter] = useState(false)
+  const [presenterDraft, setPresenterDraft] = useState(presentedBy)
 
   async function handleExportPPT() {
     setExporting(true)
     try {
-      await exportQBRtoPPT({ account, priorities, delivered, nextSteps, risks, opportunities, outcomes, mode })
+      await exportQBRtoPPT({
+        account,
+        priorities,
+        delivered,
+        nextSteps,
+        risks: account.qbrRisks,
+        opportunities: account.qbrOpportunities,
+        outcomes,
+        mode: 'standard',
+      })
     } finally {
       setExporting(false)
     }
   }
 
-  // Editable state for each card
-  const [priorities, setPriorities] = useState(account.qbrPriorities)
-  const [delivered, setDelivered] = useState(account.qbrDelivered)
-  const [nextSteps, setNextSteps] = useState(account.qbrNextSteps)
-  const [risks, setRisks] = useState(account.qbrRisks)
-  const [opportunities, setOpportunities] = useState(account.qbrOpportunities)
-  const [outcomes, setOutcomes] = useState<OutcomeRow[]>(
-    account.businessOutcomes.map(o => ({ ...o, technicalSignal: '' }))
-  )
-
-  function addOutcomeRow() {
-    setOutcomes(prev => [...prev, { metric: 'New Metric', before: '', after: '', impact: '', technicalSignal: '' }])
-  }
-
   return (
     <div className="space-y-4">
-      {/* Controls */}
+
+      {/* Controls bar */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => setMode('executive')}
-            className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg transition-all"
-            style={{
-              background: mode === 'executive' ? 'var(--accent)' : 'var(--surface)',
-              color: mode === 'executive' ? '#fff' : 'var(--text-secondary)',
-              border: `1px solid ${mode === 'executive' ? 'var(--accent)' : 'var(--border-subtle)'}`,
-            }}
-          >
-            <Minimize2 className="w-3.5 h-3.5" /> Executive (1–2 slides)
-          </button>
-          <button
-            onClick={() => setMode('standard')}
-            className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg transition-all"
-            style={{
-              background: mode === 'standard' ? 'var(--accent)' : 'var(--surface)',
-              color: mode === 'standard' ? '#fff' : 'var(--text-secondary)',
-              border: `1px solid ${mode === 'standard' ? 'var(--accent)' : 'var(--border-subtle)'}`,
-            }}
-          >
-            <Maximize2 className="w-3.5 h-3.5" /> Standard (6–8 slides)
-          </button>
+        <div className="flex items-center gap-1.5 text-xs" style={{ color: 'var(--text-muted)' }}>
+          <Pencil className="w-3 h-3" />
+          Hover any item to edit or delete · Click "+ Add item" to add a new row
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -310,105 +326,227 @@ export function QBRExecBriefTab({ account }: { account: AccountData }) {
             {exporting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileText className="w-3.5 h-3.5" />}
             {exporting ? 'Exporting…' : 'Export PPT'}
           </button>
-          <button className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg" style={{ background: 'var(--surface)', color: 'var(--text-secondary)', border: '1px solid var(--border-subtle)' }}>
+          <button className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg"
+            style={{ background: 'var(--surface)', color: 'var(--text-secondary)', border: '1px solid var(--border-subtle)' }}>
             <Download className="w-3.5 h-3.5" /> Export PDF
           </button>
         </div>
       </div>
 
-      {/* Edit hint */}
-      <div className="flex items-center gap-1.5 text-xs" style={{ color: 'var(--text-muted)' }}>
-        <Pencil className="w-3 h-3" />
-        Hover any item to edit or delete · Click "+ Add item" to add a new row
+      {/* Title card */}
+      <div className="rounded-xl overflow-hidden"
+        style={{ background: 'var(--accent-bg-hover, rgba(87,94,207,0.18))', border: '1px solid var(--accent-border-strong, rgba(87,94,207,0.4))' }}>
+        <div className="px-6 py-5 flex flex-col items-center text-center gap-3">
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bold"
+            style={{ background: 'var(--accent)', color: '#fff' }}>
+            {account.name.charAt(0)}
+          </div>
+          <div>
+            <div className="text-xl font-bold mb-1" style={{ color: 'var(--text-hover)' }}>{account.name}</div>
+            <div className="text-sm font-medium" style={{ color: 'var(--accent-light)' }}>Quarterly Business Review</div>
+          </div>
+          <div className="flex items-center gap-6 mt-1 text-xs" style={{ color: 'var(--text-secondary)' }}>
+            <div className="flex items-center gap-1.5">
+              <CalendarDays className="w-3.5 h-3.5" style={{ color: 'var(--text-muted)' }} />
+              {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+            </div>
+            <div className="flex items-center gap-1.5">
+              <User2 className="w-3.5 h-3.5" style={{ color: 'var(--text-muted)' }} />
+              {editingPresenter ? (
+                <span className="flex items-center gap-1">
+                  <input
+                    autoFocus
+                    value={presenterDraft}
+                    onChange={e => setPresenterDraft(e.target.value)}
+                    onKeyDown={e => {
+                      if (e.key === 'Enter') { setPresentedBy(presenterDraft); setEditingPresenter(false) }
+                      if (e.key === 'Escape') { setPresenterDraft(presentedBy); setEditingPresenter(false) }
+                    }}
+                    className="text-xs rounded px-1.5 py-0.5 w-44"
+                    style={{ background: 'var(--bg)', border: '1px solid var(--accent-border)', color: 'var(--text-primary)', outline: 'none' }}
+                  />
+                  <button onClick={() => { setPresentedBy(presenterDraft); setEditingPresenter(false) }} style={{ color: '#4ade80' }}><Check className="w-3 h-3" /></button>
+                  <button onClick={() => { setPresenterDraft(presentedBy); setEditingPresenter(false) }} style={{ color: '#f87171' }}><X className="w-3 h-3" /></button>
+                </span>
+              ) : (
+                <span className="cursor-pointer flex items-center gap-1 group" onClick={() => setEditingPresenter(true)}>
+                  Presented by <span style={{ color: 'var(--accent-light)', fontWeight: 600 }}>{presentedBy}</span>
+                  <Pencil className="w-2.5 h-2.5 opacity-0 group-hover:opacity-60 transition-opacity" />
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Content grid */}
-      <div className={`grid gap-4 ${mode === 'executive' ? 'grid-cols-2' : 'grid-cols-3'}`}>
+      {/* ── SECTION A: Delivered This Quarter ── */}
+      <CollapsibleCard
+        title="Delivered This Quarter"
+        icon={<CheckCircle2 className="w-4 h-4" />}
+        infoSources={['NorthstarMS', 'ConnectWise PSA', 'Commvault', 'CrowdStrike']}
+        infoDefinition="Deliverables and measured outcomes sourced from NorthstarMS delivery telemetry and ConnectWise PSA project records."
+        defaultOpen
+      >
+        <div className="space-y-5">
+          {/* Deliverables list */}
+          <div>
+            <div className="text-xs font-semibold mb-3" style={{ color: 'var(--text-muted)', letterSpacing: '0.05em' }}>WHAT WE DELIVERED</div>
+            <EditableList
+              items={delivered}
+              onChange={setDelivered}
+              icon={<CheckCircle2 className="w-3.5 h-3.5" />}
+              iconColor="#4ade80"
+            />
+          </div>
 
-        {/* What You Said Matters */}
-        <CollapsibleCard title="What You Said Matters This Quarter" icon={<FileText className="w-4 h-4" />} defaultOpen>
-          <EditableList
-            items={priorities}
-            onChange={setPriorities}
-            icon={null}
-            iconColor="var(--accent)"
-            numbered
-          />
-        </CollapsibleCard>
-
-        {/* What We Delivered */}
-        <CollapsibleCard title="What We Delivered" icon={<CheckCircle2 className="w-4 h-4" />} defaultOpen>
-          <EditableList
-            items={delivered}
-            onChange={setDelivered}
-            icon={<CheckCircle2 className="w-3.5 h-3.5" />}
-            iconColor="#4ade80"
-          />
-        </CollapsibleCard>
-
-        {/* Next Steps */}
-        <CollapsibleCard title="Next Steps & Decisions" icon={<ArrowRight className="w-4 h-4" />} defaultOpen>
-          <EditableList
-            items={nextSteps}
-            onChange={setNextSteps}
-            icon={<ArrowRight className="w-3.5 h-3.5" />}
-            iconColor="var(--accent)"
-          />
-        </CollapsibleCard>
-
-        {/* Standard mode only */}
-        {mode === 'standard' && (
-          <>
-            {/* Risks */}
-            <CollapsibleCard title="Risks We're Managing" icon={<ShieldAlert className="w-4 h-4" />}>
-              <EditableList
-                items={risks}
-                onChange={setRisks}
-                icon={<ShieldAlert className="w-3.5 h-3.5" />}
-                iconColor="#f87171"
-              />
-            </CollapsibleCard>
-
-            {/* Opportunities */}
-            <CollapsibleCard title="Opportunities to Improve Outcomes" icon={<Lightbulb className="w-4 h-4" />}>
-              <EditableList
-                items={opportunities}
-                onChange={setOpportunities}
-                icon={<Lightbulb className="w-3.5 h-3.5" />}
-                iconColor="#facc15"
-              />
-            </CollapsibleCard>
-
-            {/* Technical Metrics → Business Outcomes */}
-            <CollapsibleCard
-              title="Technical Metrics → Business Outcomes"
-              icon={<BarChart2 className="w-4 h-4" />}
-              defaultOpen
-            >
-              <div className="space-y-2">
-                <p className="text-xs mb-3" style={{ color: 'var(--text-muted)' }}>
-                  Map each delivery metric to its client-facing business outcome. Add a technical signal to show the data behind the result.
-                </p>
+          {/* Business outcome visuals */}
+          {outcomes.length > 0 && (
+            <div style={{ borderTop: '1px solid var(--border-faint)', paddingTop: '16px' }}>
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-1.5">
+                  <BarChart2 className="w-3.5 h-3.5" style={{ color: 'var(--text-muted)' }} />
+                  <span className="text-xs font-semibold" style={{ color: 'var(--text-muted)', letterSpacing: '0.05em' }}>
+                    TECHNICAL METRICS → BUSINESS OUTCOMES
+                  </span>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
                 {outcomes.map((row, i) => (
-                  <EditableOutcomeRow
+                  <OutcomeCard
                     key={i}
                     row={row}
                     onChange={updated => { const next = [...outcomes]; next[i] = updated; setOutcomes(next) }}
                     onDelete={() => setOutcomes(outcomes.filter((_, j) => j !== i))}
                   />
                 ))}
+              </div>
+              <button
+                onClick={() => setOutcomes(prev => [...prev, { metric: 'New Metric', before: '', after: '', impact: '' }])}
+                className="flex items-center gap-1.5 text-xs px-2 py-1 rounded-lg mt-3 w-full justify-center"
+                style={{ color: 'var(--text-muted)', border: '1px dashed var(--border-subtle)' }}>
+                <Plus className="w-3 h-3" /> Add metric
+              </button>
+            </div>
+          )}
+        </div>
+        <SectionChat
+          sectionTitle="Delivered This Quarter"
+          accountName={account.name}
+          context={`Delivered:\n${delivered.join('\n')}\n\nOutcomes:\n${outcomes.map(o => `${o.metric}: ${o.before} → ${o.after}. Impact: ${o.impact}`).join('\n')}`}
+          compact
+        />
+      </CollapsibleCard>
+
+      {/* ── SECTION B: Business Priorities ── */}
+      <CollapsibleCard
+        title="Business Priorities"
+        icon={<FileText className="w-4 h-4" />}
+        infoSources={['Fathom', 'ConnectWise PSA', 'MS Teams']}
+        infoDefinition="Priorities captured from Fathom meeting transcripts, ConnectWise account notes, and MS Teams conversations."
+        defaultOpen
+      >
+        <EditableList
+          items={priorities}
+          onChange={setPriorities}
+          icon={null}
+          iconColor="var(--accent)"
+          numbered
+        />
+        <SectionChat
+          sectionTitle="Business Priorities"
+          accountName={account.name}
+          context={`Client priorities:\n${priorities.map((p, i) => `${i + 1}. ${p}`).join('\n')}`}
+          compact
+        />
+      </CollapsibleCard>
+
+      {/* ── SECTION C: Industry Insights ── */}
+      <CollapsibleCard
+        title="Industry Insights"
+        icon={<Globe className="w-4 h-4" />}
+        infoSources={['Forrester', 'IDC', 'Gartner', 'Industry Reports']}
+        infoDefinition="Curated research and benchmarks from Forrester, IDC, and industry analysts relevant to this client's sector and priorities."
+        defaultOpen
+      >
+        <div className="space-y-3">
+          {account.industryInsights.map((insight, i) => (
+            <div key={i} className="flex items-start gap-3 rounded-xl p-4"
+              style={{ background: 'rgba(87,94,207,0.06)', border: '1px solid var(--accent-border-medium, rgba(87,94,207,0.18))' }}>
+              <Globe className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'var(--accent)' }} />
+              <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{insight}</p>
+            </div>
+          ))}
+        </div>
+        <SectionChat
+          sectionTitle="Industry Insights"
+          accountName={account.name}
+          context={`Industry insights for ${account.industry}:\n${account.industryInsights.join('\n')}`}
+          compact
+        />
+      </CollapsibleCard>
+
+      {/* ── SECTION D: Outcomes Driven Partnership ── */}
+      <CollapsibleCard
+        title="Outcomes Driven Partnership"
+        icon={<Handshake className="w-4 h-4" />}
+        infoSources={['NorthstarMS', 'ConnectWise PSA', 'Forrester', 'IDC']}
+        infoDefinition="Recommended next investments that directly improve client outcomes — sourced from NorthstarMS delivery signals, identified gaps, and industry benchmarks."
+        defaultOpen
+      >
+        <div className="space-y-3">
+          {account.expansionOpps.map((opp, i) => (
+            <OpportunityCard key={i} opp={opp} />
+          ))}
+        </div>
+        <SectionChat
+          sectionTitle="Outcomes Driven Partnership"
+          accountName={account.name}
+          context={`Partnership opportunities:\n${account.expansionOpps.map(o => `${o.product} — ${o.potential} (${o.confidence}): ${o.reason}`).join('\n')}`}
+          compact
+        />
+      </CollapsibleCard>
+
+      {/* ── SECTION E: Next Steps ── */}
+      <CollapsibleCard
+        title="Next Steps"
+        icon={<ArrowRight className="w-4 h-4" />}
+        infoSources={['Fathom', 'ConnectWise PSA']}
+        infoDefinition="Agreed actions and upcoming touchpoints from Fathom meeting notes and ConnectWise action items."
+        defaultOpen
+      >
+        <div className="space-y-2">
+          {nextSteps.map((step, i) => (
+            <div key={i} className="group flex items-start gap-3 rounded-xl px-4 py-3"
+              style={{ background: 'var(--bg)', border: '1px solid var(--border-faint)' }}>
+              <span className="text-base flex-shrink-0 mt-0.5">{nextStepIcon(step)}</span>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm leading-relaxed" style={{ color: 'var(--text-primary)' }}>{step}</p>
+              </div>
+              <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
                 <button
-                  onClick={addOutcomeRow}
-                  className="flex items-center gap-1.5 text-xs px-2 py-1 rounded-lg w-full justify-center mt-1"
-                  style={{ color: 'var(--text-muted)', border: '1px dashed var(--border-subtle)' }}
-                >
-                  <Plus className="w-3 h-3" /> Add metric
+                  onClick={() => setNextSteps(prev => prev.filter((_, j) => j !== i))}
+                  className="p-0.5 rounded" style={{ color: '#f87171' }}
+                  title="Remove">
+                  <Trash2 className="w-3 h-3" />
                 </button>
               </div>
-            </CollapsibleCard>
-          </>
-        )}
-      </div>
+            </div>
+          ))}
+          <button
+            onClick={() => setNextSteps(prev => [...prev, ''])}
+            className="flex items-center gap-1.5 text-xs px-2 py-1 rounded-lg mt-1"
+            style={{ color: 'var(--text-muted)', border: '1px dashed var(--border-subtle)' }}>
+            <Plus className="w-3 h-3" /> Add next step
+          </button>
+        </div>
+        <SectionChat
+          sectionTitle="Next Steps"
+          accountName={account.name}
+          context={`Agreed next steps:\n${nextSteps.join('\n')}`}
+          compact
+        />
+      </CollapsibleCard>
+
     </div>
   )
 }

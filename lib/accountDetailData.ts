@@ -73,6 +73,11 @@ export const accountDetailData: AccountData[] = [
       '"Our insurance auditor is asking for a DR runbook and we don\'t have one."',
       '"If the Nutanix goes down during a production run, we\'re shut down for the day."',
     ],
+    customerSaidMeta: [
+      { source: 'Fathom — QBR Prep Call', timestamp: 'Jan 15, 2026' },
+      { source: 'ConnectWise PSA — Account Note', timestamp: 'Jan 22, 2026' },
+      { source: 'Fathom — Monthly Check-in', timestamp: 'Feb 3, 2026' },
+    ],
     weObserved: [
       'Commvault: 0% backup success rate for 11 days on ERP dataset — no ticket raised by internal IT (ConnectWise)',
       'Nutanix: 3 capacity threshold alerts over 7 days — no remediation action taken',
@@ -167,7 +172,13 @@ export const accountDetailData: AccountData[] = [
     qbrDelivered: ['99.4% uptime on all monitored endpoints', 'Resolved 3 critical SCADA polling errors', 'Microsoft 365 license optimization — saved $4,200 annually'],
     qbrRisks: ['Commvault backup failure — 11 days undetected, remediation in progress', 'Nutanix capacity — must expand before automation rollout'],
     qbrOpportunities: ['Nutanix node expansion: $65K, 4-week lead time', 'DR planning engagement: $28K, required for insurance renewal'],
-    qbrNextSteps: ['Close Nutanix expansion SOW by end of month', 'Complete backup alerting integration this week', 'Schedule DR planning kickoff for Q2'],
+    qbrNextSteps: [
+      '🤝 Introduce incoming VP of Operations (starting May 1) to NorthstarMS account team — align on automation rollout priorities',
+      '📋 Review Nutanix node expansion SOW — confirm scope and sign off ahead of Q3 production go-live',
+      '🎟️ Invitation to Nutanix .NEXT Conference — April 29, Las Vegas (infrastructure modernization track)',
+      '📅 Schedule DR planning engagement kickoff — cyber insurance renewal requires RPO/RTO runbook by Q3',
+      '⚙️ Complete backup alerting integration with ConnectWise auto-ticketing — confirm 100% job success rate',
+    ],
     industryInsights: [
       'Forrester (2025): 67% of manufacturing firms cite unplanned downtime as their top IT risk — proactive monitoring vendors with embedded alerting see 2.3x higher renewal rates.',
       'IDC (2024): Manufacturing companies investing in HCI modernization see 34% reduction in infrastructure management overhead — the ROI case for Nutanix expansion writes itself.',
@@ -248,6 +259,11 @@ export const accountDetailData: AccountData[] = [
       '"Our auditors are asking about SOC 2 and we don\'t have a clear answer."',
       '"I need to know what we\'re actually getting for what we\'re paying."',
       '"We might need a firm that specializes more in financial sector compliance."',
+    ],
+    customerSaidMeta: [
+      { source: 'Fathom — Strategy Session', timestamp: 'Feb 10, 2026' },
+      { source: 'ConnectWise PSA — Account Note', timestamp: 'Jan 28, 2026' },
+      { source: 'MS Teams — Direct Message', timestamp: 'Feb 14, 2026' },
     ],
     weObserved: [
       'ConnectWise: only reactive tickets in 35 days — zero strategic engagement requests',
@@ -342,7 +358,13 @@ export const accountDetailData: AccountData[] = [
     qbrDelivered: ['99.2% endpoint uptime', 'Resolved 2 critical network alerts', 'Microsoft 365 license audit — identified 8 unused licenses'],
     qbrRisks: ['SOC 2 audit window approaching with no control documentation', 'MFA gap on financial applications — unresolved 28 days'],
     qbrOpportunities: ['SOC 2 gap assessment: $35K — immediate engagement', 'MDR deployment: $22K/yr — satisfies SOC 2 and insurance requirements'],
-    qbrNextSteps: ['Schedule SOC 2 gap assessment kickoff', 'Deploy Microsoft Defender for Business (existing license)', 'CFO briefing on SEC cybersecurity disclosure requirements'],
+    qbrNextSteps: [
+      '🤝 Introduce CFO to NorthstarMS vCISO practice lead — 30-minute SOC 2 advisory briefing',
+      '📋 Review SOC 2 gap assessment proposal — align on 4-week sprint timeline to hit Q4 audit window',
+      '🎟️ Invitation to Microsoft Security Summit — May 2026, virtual (compliance & financial sector track)',
+      '⚙️ Deploy Microsoft Defender for Business across all endpoints (included in existing M365 license)',
+      '📅 Schedule SEC cybersecurity disclosure requirements review with CFO and Compliance Officer',
+    ],
     industryInsights: [
       'Forrester (2025): Financial services firms with co-managed security partnerships achieve SOC 2 certification 40% faster than those managing compliance internally — the partnership model is a competitive differentiator.',
       'IDC (2024): 78% of financial firms under $1B in revenue cite cybersecurity compliance as their top IT priority for 2025–2026 — driven by SEC disclosure rules and insurance premium pressure.',
@@ -422,6 +444,11 @@ export const accountDetailData: AccountData[] = [
       '"The OneDrive thing is driving our attorneys crazy — they keep going back to saving locally."',
       '"I don\'t have time to be the IT person AND the office manager."',
       '"We know we should be doing more on security but nobody has pushed us on it."',
+    ],
+    customerSaidMeta: [
+      { source: 'Fathom — Monthly Check-in', timestamp: 'Feb 5, 2026' },
+      { source: 'Fathom — Monthly Check-in', timestamp: 'Feb 5, 2026' },
+      { source: 'ConnectWise PSA — Account Note', timestamp: 'Jan 19, 2026' },
     ],
     weObserved: [
       'ConnectWise: 14 OneDrive sync tickets in 30 days — attorneys bypassing cloud storage',
@@ -504,7 +531,13 @@ export const accountDetailData: AccountData[] = [
     qbrDelivered: ['99.6% endpoint uptime', 'Zero email downtime — Exchange migration complete', 'Resolved Clio integration connectivity issue'],
     qbrRisks: ['OneDrive adoption failure — matter files still on local shares', 'ABA compliance gap — no formal cybersecurity policy'],
     qbrOpportunities: ['vCISO engagement: $24K/yr — ABA compliance advisory', 'M365 adoption program: $12K — eliminate attorney IT friction'],
-    qbrNextSteps: ['Launch M365 adoption sprint this month', 'Schedule ABA compliance briefing with Managing Partner', 'Onboard 2 new associates — licensing and device setup'],
+    qbrNextSteps: [
+      '🤝 Introduce Managing Partner to NorthstarMS legal sector compliance specialist — ABA cybersecurity briefing',
+      '📋 Review vCISO engagement proposal — ABA Formal Opinion 477R compliance scope and annual advisory retainer',
+      '🎟️ Invitation to ILTA>ON 2026 Legal Technology Conference — August, Chicago (legal security track)',
+      '⚙️ Launch M365 adoption sprint — OneDrive governance and attorney training sessions this month',
+      '📅 Onboard 2 new associates — licensing, device setup, and Clio/iManage access provisioning',
+    ],
     industryInsights: [
       'ABA TechReport 2025: 29% of law firms reported a security breach in the past year — firms with a formal cybersecurity policy are 60% less likely to suffer a material incident.',
       'Forrester (2024): Legal sector co-managed IT engagements that include compliance advisory see 45% higher renewal rates — compliance is the new retention lever for MSPs serving law firms.',
@@ -585,6 +618,11 @@ export const accountDetailData: AccountData[] = [
       '"Our doctors are complaining about Epic being slow in the mornings — that\'s unacceptable."',
       '"HIPAA is coming and I need to know we\'re covered."',
       '"I want NorthstarMS to be more proactive, not just fix things after we report them."',
+    ],
+    customerSaidMeta: [
+      { source: 'Fathom — Clinical IT Review', timestamp: 'Feb 12, 2026' },
+      { source: 'Fathom — Clinical IT Review', timestamp: 'Feb 12, 2026' },
+      { source: 'ConnectWise PSA — Account Note', timestamp: 'Feb 1, 2026' },
     ],
     weObserved: [
       'NorthstarMS monitoring: Epic response time >4s during 8–10am, returning to <1s by 10:30am — storage I/O contention pattern',
@@ -667,7 +705,13 @@ export const accountDetailData: AccountData[] = [
     qbrDelivered: ['99.7% uptime on all monitored clinical endpoints', 'Resolved 3 Cisco network alerts', 'Commvault backup job rescheduling — eliminating Epic I/O conflict'],
     qbrRisks: ['HIPAA risk analysis gap — insurance renewal in 60 days', 'Epic performance tickets — resolved but monitoring ongoing'],
     qbrOpportunities: ['HIPAA risk assessment: $22K — insurance renewal enabler', 'Healthcare IT compliance retainer: $30K/yr — ongoing HIPAA advisory'],
-    qbrNextSteps: ['Deliver Epic performance improvement report this week', 'Schedule HIPAA assessment kickoff with Compliance Manager', 'Present Nutanix 12-month capacity model at next QBR'],
+    qbrNextSteps: [
+      '🤝 Introduce Compliance Manager to NorthstarMS HIPAA advisory practice lead — structured engagement briefing',
+      '📋 Review HIPAA Security Risk Assessment proposal — align to June cyber insurance renewal deadline',
+      '🎟️ Invitation to HIMSS 2026 Annual Conference — March, Las Vegas (clinical informatics + cybersecurity track)',
+      '📅 Schedule Epic performance optimization review with IT Director and CMO — present before/after metrics',
+      '📅 Present Nutanix 12-month capacity model at next QBR — plan ahead of fiscal year budget cycle',
+    ],
     industryInsights: [
       'HHS OCR (2025): Healthcare organizations with annual HIPAA security risk analyses are 3x less likely to face material audit findings — proactive risk management is the differentiator.',
       'KLAS Research (2024): Epic EHR performance is the #1 complaint from clinical staff at community health groups — organizations that resolve latency issues see measurable provider satisfaction improvements within 90 days.',
@@ -748,6 +792,11 @@ export const accountDetailData: AccountData[] = [
       '"Our consultants are using WhatsApp for client work — I know that\'s a problem but I haven\'t had time to fix it."',
       '"I asked for a cloud roadmap months ago and I\'m still waiting."',
       '"What exactly are we paying for? I want to see the value."',
+    ],
+    customerSaidMeta: [
+      { source: 'MS Teams — Direct Message', timestamp: 'Jan 30, 2026' },
+      { source: 'ConnectWise PSA — Account Note', timestamp: 'Feb 7, 2026' },
+      { source: 'Fathom — QBR Prep Call', timestamp: 'Feb 18, 2026' },
     ],
     weObserved: [
       'ConnectWise: 8 Teams file-sharing tickets — consultants not using SharePoint properly',
@@ -830,7 +879,13 @@ export const accountDetailData: AccountData[] = [
     qbrDelivered: ['99.5% network uptime', 'Zero email downtime since migration', 'Intune enrollment for 8 of 14 endpoints'],
     qbrRisks: ['Sage server capacity — 90% threshold in ~90 days without refresh', 'Teams adoption gap — consultant personal app usage creating compliance risk'],
     qbrOpportunities: ['Teams adoption program: $10K — governance and training', 'Cloud migration roadmap: $18K — CEO conversation starter'],
-    qbrNextSteps: ['Deliver cloud migration roadmap to Operations Manager', 'Enroll remaining 6 endpoints in Intune', 'Schedule CEO business value briefing'],
+    qbrNextSteps: [
+      '🤝 Introduce CEO to NorthstarMS cloud migration practice lead — business case briefing with peer firm case study',
+      '📋 Review cloud migration roadmap proposal with Operations Manager (requested 3 months ago — deliver this week)',
+      '🎟️ Invitation to AWS re:Invent 2026 — December, Las Vegas (cloud migration and SaaS modernization track)',
+      '⚙️ Enroll remaining 6 consultant endpoints in Intune — schedule with IT Coordinator this week',
+      '📅 Schedule Sage server refresh review — disk at 78%, 90% threshold in ~90 days',
+    ],
     industryInsights: [
       'Forrester (2025): Professional services firms with >80% Microsoft Teams adoption report 22% faster client deliverable turnaround — collaboration tool governance is a direct revenue driver.',
       'IDC (2024): Co-managed IT partnerships that deliver quarterly business outcome reports see 38% higher renewal rates — outcome reporting is the retention differentiator.',
@@ -911,6 +966,11 @@ export const accountDetailData: AccountData[] = [
       '"If you could tie the Samsara data into our operations view, that would be a game-changer."',
       '"We have zero IT issues — that\'s exactly what I need to run this operation."',
       '"I tell everyone about NorthstarMS. You\'ve made my job so much easier."',
+    ],
+    customerSaidMeta: [
+      { source: 'Fathom — Executive Strategy Call', timestamp: 'Mar 4, 2026' },
+      { source: 'Fathom — Executive Strategy Call', timestamp: 'Mar 4, 2026' },
+      { source: 'Fathom — Executive Strategy Call', timestamp: 'Mar 4, 2026' },
     ],
     weObserved: [
       'NorthstarMS: 99.8% uptime across all 3 warehouses for 6 months — zero critical incidents',
@@ -993,7 +1053,13 @@ export const accountDetailData: AccountData[] = [
     qbrDelivered: ['99.8% uptime across all 3 warehouses', '100% Commvault backup success rate', 'Zero critical incidents in 6 months'],
     qbrRisks: ['Legacy Cisco switches — end-of-life in 18 months', 'OT/IoT devices unmonitored — fleet-connected endpoints outside NorthstarMS scope'],
     qbrOpportunities: ['Telematics integration: $45K — high COO interest', 'Cisco refresh: $62K — 18-month horizon planning'],
-    qbrNextSteps: ['Schedule telematics integration COO briefing', 'Request reference conversation with COO', 'Deliver Cisco refresh timeline to IT Manager'],
+    qbrNextSteps: [
+      '🤝 Introduce incoming CTO (starting April 15) to NorthstarMS account team — strategic IT roadmap alignment',
+      '📋 Review Cisco network refresh proposal with IT Manager — present ROI model and 3-year cost comparison',
+      '🎟️ Invitation to Gartner IT Symposium/Xpo — October 2026, Orlando (logistics and supply chain tech track)',
+      '📅 Schedule telematics integration COO briefing — NorthstarMS fleet analytics integration demo',
+      '🤝 Request COO reference conversation — peer logistics firm using NorthstarMS co-managed model',
+    ],
     industryInsights: [
       'Forrester (2025): Logistics firms that integrate telematics data with IT infrastructure see 18% improvement in on-time delivery rates — the ROI case for operations intelligence is proven.',
       'IDC (2024): Co-managed MSP partnerships in logistics that expand into OT/IoT monitoring command 35% higher ARR per client — operational scope expansion is the growth lever.',
@@ -1074,6 +1140,11 @@ export const accountDetailData: AccountData[] = [
       '"Phase 1 went perfectly — let\'s talk about what Phase 2 looks like."',
       '"Our enterprise prospects are asking about ISO 27001 and we need to move on that."',
       '"I want NorthstarMS involved in the DevOps pipeline conversation — you understand our stack."',
+    ],
+    customerSaidMeta: [
+      { source: 'Fathom — Phase 1 Debrief', timestamp: 'Feb 25, 2026' },
+      { source: 'Fathom — Phase 1 Debrief', timestamp: 'Feb 25, 2026' },
+      { source: 'MS Teams — Engineering Channel', timestamp: 'Mar 2, 2026' },
     ],
     weObserved: [
       'NorthstarMS: 99.9% uptime on Azure workloads since Phase 1 migration — zero cloud incidents',
@@ -1156,7 +1227,13 @@ export const accountDetailData: AccountData[] = [
     qbrDelivered: ['99.9% Azure workload uptime since Phase 1 migration', 'Developer productivity tickets down 65%', 'Zero cloud security incidents'],
     qbrRisks: ['3 on-prem workloads remaining — hybrid complexity and maintenance cost', 'No security controls documentation — ISO 27001 prerequisite gap'],
     qbrOpportunities: ['Azure Phase 2: $55K — full cloud migration', 'ISO 27001 readiness: $40K — enterprise sales enabler'],
-    qbrNextSteps: ['Deliver Azure Phase 2 proposal to CTO', 'Scope ISO 27001 readiness program this week', 'Join VP Engineering DevOps pipeline review'],
+    qbrNextSteps: [
+      '🤝 Introduce VP Engineering to NorthstarMS DevSecOps practice — pipeline security and secrets management review',
+      '📋 Review Azure Phase 2 migration proposal with CTO — scope cloud-native architecture and cost model',
+      '🎟️ Invitation to AWS re:Invent 2026 — December, Las Vegas (cloud infrastructure and DevSecOps track)',
+      '📅 Schedule ISO 27001 readiness program kickoff with CTO — 12-week engagement scope',
+      '📅 Join VP Engineering DevOps pipeline review — NorthstarMS security tooling integration walkthrough',
+    ],
     industryInsights: [
       'Forrester (2025): Technology companies that achieve ISO 27001 see an average 31% increase in enterprise deal close rate — compliance certification is a direct revenue driver for mid-market SaaS firms.',
       'IDC (2024): Full Azure migration (vs. hybrid) reduces infrastructure management overhead by 42% for mid-market technology companies — the ROI case for Phase 2 is well-established.',
@@ -1237,6 +1314,11 @@ export const accountDetailData: AccountData[] = [
       '"Our Google contract is coming up — I\'ve been wondering if Microsoft 365 for Education makes more sense now."',
       '"We have a lot of EdTech apps and I\'m not sure all of them have proper FERPA agreements in place."',
       '"The Chromebooks are basically unmanaged from an IT policy standpoint and that worries me."',
+    ],
+    customerSaidMeta: [
+      { source: 'Fathom — IT Planning Session', timestamp: 'Mar 10, 2026' },
+      { source: 'Fathom — IT Planning Session', timestamp: 'Mar 10, 2026' },
+      { source: 'ConnectWise PSA — Account Note', timestamp: 'Feb 20, 2026' },
     ],
     weObserved: [
       'NorthstarMS: 99.4% uptime on all staff Windows endpoints — Chromebooks outside current monitoring scope',
@@ -1320,7 +1402,13 @@ export const accountDetailData: AccountData[] = [
     qbrDelivered: ['99.4% staff endpoint uptime', 'Zero critical incidents for 4 months', 'PowerSchool CISA vulnerability patched'],
     qbrRisks: ['Google Workspace FERPA control gaps — third-party integrations not all documented', 'Chromebook fleet unmanaged — student device policy gap'],
     qbrOpportunities: ['M365 for Education migration: $28K + $12K/yr savings', 'FERPA compliance advisory: $20K — Data Privacy Officer champion'],
-    qbrNextSteps: ['Deliver M365 for Education proposal to IT Director', 'Complete EdTech FERPA audit with Data Privacy Officer', 'Present Chromebook Intune management options'],
+    qbrNextSteps: [
+      '🤝 Introduce IT Director to NorthstarMS education sector specialist — M365 for Education and FERPA compliance overview',
+      '📋 Review M365 for Education proposal — Teams for Education, Intune for Chromebooks, and student data governance',
+      '🎟️ Invitation to CoSN 2026 Annual Conference — March, Washington DC (EdTech and student data privacy track)',
+      '📅 Complete FERPA data audit with Data Privacy Officer — identify student PII exposure in current environment',
+      '📅 Present Chromebook Intune management options to IT Director — enrollment and policy enforcement demo',
+    ],
     industryInsights: [
       'CoSN (2025): 68% of K-12 districts have at least one third-party EdTech integration without a documented FERPA data agreement — FERPA compliance advisory is the highest-demand service in the education technology market.',
       'IDC (2024): K-12 districts migrating to Microsoft 365 for Education report 24% lower IT support costs vs. Google Workspace — the platform shift ROI is well-documented for the education sector.',

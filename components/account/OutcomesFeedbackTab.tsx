@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { ThumbsUp, ThumbsDown, DollarSign, Shield, TrendingUp, Heart, Layers, PlayCircle } from 'lucide-react'
 import { CollapsibleCard } from '@/components/ui/CollapsibleCard'
+import { SectionChat } from './SectionChat'
 import { AccountData, Outcome } from '@/lib/types'
 
 const RESULT_STYLE: Record<string, { color: string; icon: React.ReactNode }> = {
@@ -29,6 +30,8 @@ export function OutcomesFeedbackTab({ account }: { account: AccountData }) {
       <div className="col-span-2">
         <CollapsibleCard
           title="Recommendation Accuracy"
+          infoSources={['NorthstarMS', 'Fathom', 'ConnectWise PSA']}
+          infoDefinition="Recommendations generated from NorthstarMS delivery signals, Fathom meeting notes, and ConnectWise account data. Mark each as accurate or inaccurate to improve future outputs."
           badge={
             <div className="flex items-center gap-2 ml-2">
               <span className="text-xs" style={{ color: '#4ade80' }}>✓ {accurate}</span>
@@ -105,19 +108,32 @@ export function OutcomesFeedbackTab({ account }: { account: AccountData }) {
               )
             })}
           </div>
+          <SectionChat
+            sectionTitle="Recommendation Accuracy"
+            accountName={account.name}
+            context={outcomes.map(o => `Recommendation: ${o.recommendation}\nResult: ${o.result ?? 'Pending'}\nAccurate: ${o.accurate === true ? 'Yes' : o.accurate === false ? 'No' : 'Not rated'}`).join('\n\n')}
+          />
         </CollapsibleCard>
       </div>
 
       {/* Right 1/3 */}
       <div className="space-y-4">
-        <CollapsibleCard title="Impact Summary">
+        <CollapsibleCard
+          title="Impact Summary"
+          infoSources={['NorthstarMS', 'ConnectWise PSA']}
+          infoDefinition="Aggregated impact metrics from delivery outcomes tracked in NorthstarMS and ConnectWise."
+        >
           <div className="text-center py-6" style={{ color: 'var(--text-muted)' }}>
             <TrendingUp className="w-8 h-8 mx-auto mb-2 opacity-30" />
             <div className="text-xs">Impact analytics coming soon</div>
           </div>
         </CollapsibleCard>
 
-        <CollapsibleCard title="Model Performance">
+        <CollapsibleCard
+          title="Model Performance"
+          infoSources={['NorthstarMS']}
+          infoDefinition="Tracks accuracy of AI-generated recommendations based on account manager feedback over time."
+        >
           <div className="text-center py-6" style={{ color: 'var(--text-muted)' }}>
             <Shield className="w-8 h-8 mx-auto mb-2 opacity-30" />
             <div className="text-xs">Model performance metrics coming soon</div>
